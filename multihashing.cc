@@ -8,6 +8,7 @@ extern "C" {
     #include "bcrypt.h"
     #include "keccak.h"
     #include "quark.h"
+    #include "blake2s.h"
     #include "scryptjane.h"
     #include "scryptn.h"
     #include "skein.h"
@@ -316,6 +317,29 @@ NAN_METHOD(blake) {
     );
 }
 
+NAN_METHOD(blake2s) {
+    NanScope();
+
+    if (args.Length() < 1)
+        return THROW_ERROR_EXCEPTION("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return THROW_ERROR_EXCEPTION("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    uint32_t input_len = Buffer::Length(target);
+
+    blake2s_hash(input, output, input_len);
+
+    NanReturnValue(
+        NanNewBufferHandle(output, 32)
+    );
+}
+
 
 NAN_METHOD(fugue) {
     NanScope();
@@ -592,6 +616,7 @@ NAN_METHOD(lyra2z) {
 
 void init(Handle<Object> exports) {
     exports->Set(NanNew<String>("quark"), NanNew<FunctionTemplate>(quark)->GetFunction());
+    exports->Set(NanNew<String>("blake2s"), NanNew<FunctionTemplate>(blake2s)->GetFunction());
     exports->Set(NanNew<String>("x11"), NanNew<FunctionTemplate>(x11)->GetFunction());
     exports->Set(NanNew<String>("scrypt"), NanNew<FunctionTemplate>(scrypt)->GetFunction());
     exports->Set(NanNew<String>("scryptn"), NanNew<FunctionTemplate>(scryptn)->GetFunction());
