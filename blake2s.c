@@ -8,8 +8,8 @@
 
 void blake2s_hash(const char* input, char* output, uint32_t len)
 {
-    sph_blake2s_context ctx_blake;
-    sph_blake2s_init(&ctx_blake);
-    sph_blake2s_update(&ctx_blake, input, len);
-    sph_blake2s_final(&ctx_blake, output);
+    blake2s_context ctx_blake;
+    blake2s_init(&ctx_blake);
+    blake2s_update(&ctx_blake, input, len);
+    blake2s_final(&ctx_blake, output);
 }
