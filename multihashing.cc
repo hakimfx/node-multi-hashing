@@ -333,7 +333,7 @@ NAN_METHOD(blake2s) {
 
     uint32_t input_len = Buffer::Length(target);
 
-    blake2s_hash(input, output, input_len);
+    blake2s_hash(output, input);
 
     NanReturnValue(
         NanNewBufferHandle(output, 32)
