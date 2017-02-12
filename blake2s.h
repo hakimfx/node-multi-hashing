@@ -7,7 +7,7 @@ extern "C" {
 
 #include <stdint.h>
 
-void blake2s_hash(char* output, const char* input);
+void blake2s_hash(const char* input, char* output);
 
 #ifdef __cplusplus
 }
